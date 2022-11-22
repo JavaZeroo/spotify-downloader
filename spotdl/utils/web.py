@@ -27,6 +27,7 @@ from fastapi import (
 from spotdl.download.progress_handler import NAME_TO_LEVEL, ProgressHandler, SongTracker
 
 from spotdl.types.song import Song
+from spotdl.types.album import Album
 from spotdl.download.downloader import Downloader
 from spotdl.utils.search import get_search_results
 from spotdl.utils.config import get_spotdl_path
@@ -90,7 +91,7 @@ class WSProgressHandler:
         # Add the connection to the list of connections
         app_state.ws_instances.append(self)
 
-        app_state.logger.info(f"Client {self.client_id} connected")
+        app_state.logger.info("Client %s connected", self.client_id)
 
     async def send_update(self, update: Dict[str, Any]):
         """
@@ -137,7 +138,7 @@ class WSProgressHandler:
             if instance.client_id == client_id:
                 return instance
 
-        app_state.logger.error(f"Client {client_id} not found")
+        app_state.logger.error("Client %s not found", client_id)
 
         return None
 
@@ -240,6 +241,21 @@ def query_search(query: str) -> List[Song]:
     return get_search_results(query)
 
 
+@router.get("/api/albums/search")
+def query_search_albums(query: str) -> List[Album]:
+    """
+    Parse search term and return list of Album objects.
+
+    ### Arguments
+    - query: The query to parse.
+
+    ### Returns
+    - returns a list of Album objects.
+    """
+
+    return Album.list_from_search_term(query)
+
+
 @router.post("/api/download/url")
 async def download_url(
     url: str, client_id: str, state: ApplicationState = Depends(get_current_state)
@@ -294,7 +310,7 @@ async def download_url(
 
 
 @router.get("/api/download/file")
-async def download_file(file: str) -> FileResponse:
+async def download_file(file: str, client_id: str) -> FileResponse:
     """
     Download file using path.
 
@@ -306,7 +322,7 @@ async def download_file(file: str) -> FileResponse:
     """
 
     return FileResponse(
-        str((get_spotdl_path() / f"web/sessions/{file}").absolute()),
+        str((get_spotdl_path() / f"web/sessions/{client_id}/{file}").absolute()),
         filename=file,
     )
 

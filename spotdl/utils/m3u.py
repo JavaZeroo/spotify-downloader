@@ -117,6 +117,14 @@ def gen_m3u_files(
             file_extension,
             short,
         )
+    else:
+        create_m3u_file(
+            file_name,
+            song_list,
+            template,
+            file_extension,
+            short,
+        )
 
 
 def create_m3u_file(
@@ -139,8 +147,6 @@ def create_m3u_file(
     ### Returns
     - the m3u content as a string
     """
-
-    print(f"Creating {file_name}...")
 
     m3u_content = create_m3u_content(song_list, template, file_extension, short)
 
