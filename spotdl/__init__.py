@@ -99,7 +99,7 @@ class Spotdl:
         """
 
         if audio_providers is None:
-            audio_providers = ["youtube-music"]
+            audio_providers = ["youtube"]
 
         if lyrics_providers is None:
             lyrics_providers = ["musixmatch"]

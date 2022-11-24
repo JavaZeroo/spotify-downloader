@@ -1,5 +1,5 @@
 """
-Downloader module, this is where all the downloading pre/post processing happens etc.
+Downloader module, this is where all the downloading pre/post-processing happens etc.
 """
 
 import json
@@ -118,7 +118,7 @@ class Downloader:
         """
 
         if audio_providers is None:
-            audio_providers = ["youtube-music"]
+            audio_providers = ["youtube"]
 
         if lyrics_providers is None:
             lyrics_providers = ["musixmatch"]
@@ -162,7 +162,7 @@ class Downloader:
             max_workers=threads
         )
 
-        # If ffmpeg is the default value and it's not installed
+        # If ffmpeg is the default value, and it's not installed
         # try to use the spotdl's ffmpeg
         if ffmpeg == "ffmpeg" and shutil.which("ffmpeg") is None:
             ffmpeg_exec = get_ffmpeg_path()

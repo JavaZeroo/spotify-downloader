@@ -119,7 +119,7 @@ DEFAULT_CONFIG = {
     "log_level": "INFO",
     "simple_tui": False,
     "cache_path": str(get_cache_path()),
-    "audio_providers": ["youtube-music"],
+    "audio_providers": ["youtube"],
     "lyrics_providers": ["genius", "azlyrics", "musixmatch"],
     "ffmpeg": "ffmpeg",
     "bitrate": None,
