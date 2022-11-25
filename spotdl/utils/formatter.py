@@ -54,8 +54,8 @@ def create_song_title(song_name: str, song_artists: List[str]) -> str:
 
     """
 
-    joined_artists = ", ".join(song_artists)
-    if len(song_artists) >= 1:
+    if song_artists is not None and len(song_artists) >= 1: # FIX When song_artists is None
+        joined_artists = ", ".join(song_artists)
         return f"{joined_artists} - {song_name}"
 
     return song_name

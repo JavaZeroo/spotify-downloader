@@ -10,6 +10,7 @@ from spotdl.utils.spotify import SpotifyClient
 from spotdl.utils.search import get_simple_songs
 import requests
 import json
+from spotdl.utils.search import reinit_song
 
 def main():
     spotdl = Spotdl(
@@ -62,15 +63,28 @@ def main():
     #     "download_url": "https://www.youtube.com/watch?v=nfyk-V5CoIE",
     #     "song_list": None,
     # }
-    input_url = "https://open.spotify.com/track/7bICD0oRoc9wdUvNils2T6?si=b2b0100482484350"
+    input_url = "https://open.spotify.com/playlist/1SdVVqpwdD5WjSWTpdGs68?si=542f1cfbdd984a90"
     # input_url = input("URL:")
-    songs = get_simple_songs([input_url])
+    songs = []
+    for song in get_simple_songs([input_url]):
+        songs.append(reinit_song(song))
+
     for song in songs:
         print(song.name)
-        print(song.url)
-        print(song.download_url)
-
-    spotdl.download_songs(songs)
+    download_urls = []
+    aps = []
+    for song in songs:
+        try:
+            doownload_url, audio_provider = spotdl.downloader.search(song)
+            download_urls.append(doownload_url)
+            aps.append(audio_provider)
+        except LookupError:
+            download_urls.append(None)
+            aps.append(None)
+    print(download_urls)
+    print(aps)
+    
+    # spotdl.download_songs(songs)
     
 if __name__ == '__main__':
     main()
